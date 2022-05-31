@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, Col, Container, Form, Input, Row, Alert } from 'reactstrap';
-import { Users } from './User';
 import './Login.css';
-import { useNavigate } from 'react-router';
 import AuthRouter from '../AuthRouter';
+import { UserContext } from '../../store/UserContext';
+import { Link, useNavigate } from 'react-router-dom';
 
 const BootstrapLogin = () => {
     const [isFail, setIsFail] = useState(false);
-
     const [user, setUser] = useState({
         id: '',
         password: '',
@@ -20,9 +19,10 @@ const BootstrapLogin = () => {
 
     const navigate = useNavigate();
 
+    const { users } = useContext(UserContext);
     const onSubmitLogin = (e) => {
         e.preventDefault();
-        const findUser = Users.find((data) => data.userId === user.id && data.password === user.password);
+        const findUser = users.find((data) => data.userId === user.id && data.password === user.password);
         if (findUser) {
             localStorage.setItem('id', findUser.id);
             navigate('/');
@@ -64,7 +64,7 @@ const BootstrapLogin = () => {
             <Container className="bg-light border">
                 <Row style={{ padding: '1em', textAlign: 'center' }}>
                     <p>
-                        계정이 없으신가요? <a href="/join">가입하기</a>
+                        계정이 없으신가요? <Link to={'/join'}>가입하기</Link>
                     </p>
                 </Row>
             </Container>

@@ -1,22 +1,68 @@
 import './App.css';
-import Login from './components/Login/Login';
 import Join from './components/Join/Join';
 import BootstrapLogin from './components/Login/BootstrapLogin';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from './components/Main';
 import Page404 from './components/Page404';
+import { useState } from 'react';
+import { Users } from './data/User';
+import { Post } from './data/Post';
+import { Follows } from './data/Follow';
+import { UserContext } from './store/UserContext';
+import { PostContext } from './store/PostContext';
+import { FollowContext } from './store/FollowContext';
+import Layout from './components/Layout/Layout';
 
 function App() {
+    const [users, setUsers] = useState(Users);
+    const insertUsers = (user) => {
+        const newUser = { ...user, userId: user.id, id: Users.length };
+        setUsers([...users, newUser]);
+    };
+    const updateUsers = (user) => {
+        const id = Number(localStorage.getItem('id'));
+        const { img, name } = user;
+        const findUsersIndex = users.findIndex((user) => user.id === id);
+        if (findUsersIndex === -1) {
+            console.error('not found');
+            return;
+        }
+        const newUsers = [...users];
+        newUsers.splice(findUsersIndex, 1, { ...users[findUsersIndex], name, img });
+        setUsers(newUsers);
+    };
+
+    const [posts, setPosts] = useState(Post);
+    const insertPost = (post) => {
+        const newPost = { ...post, userId: Number(localStorage.getItem('id')), id: posts.length };
+        setPosts([...posts, newPost]);
+    };
+
+    const [follows, setFollows] = useState(Follows);
+    const insertFollow = (followerId) => {
+        const newFollow = { following: Number(localStorage.getItem('id')), follower: followerId };
+        setFollows([...follows, newFollow]);
+    };
+
     return (
         <div className="App">
-            <BrowserRouter>
-                <Routes>
-                    <Route index path="/" element={<Main></Main>}></Route>
-                    <Route index path="/login" element={<BootstrapLogin></BootstrapLogin>}></Route>
-                    <Route path="/join" element={<Join></Join>}></Route>
-                    <Route index path="/*" element={<Page404></Page404>}></Route>
-                </Routes>
-            </BrowserRouter>
+            <UserContext.Provider value={{ users, insertUsers, updateUsers }}>
+                <PostContext.Provider value={{ posts, insertPost }}>
+                    <FollowContext.Provider value={{ follows, insertFollow }}>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route path="/" element={<Layout></Layout>}>
+                                    <Route index element={<Main></Main>}></Route>
+                                    <Route path="/shopping" element={<Main></Main>}></Route>
+                                </Route>
+                                <Route path="/login" element={<BootstrapLogin></BootstrapLogin>}></Route>
+                                <Route path="/join" element={<Join></Join>}></Route>
+                                <Route path="/*" element={<Page404></Page404>}></Route>
+                            </Routes>
+                        </BrowserRouter>
+                    </FollowContext.Provider>
+                </PostContext.Provider>
+            </UserContext.Provider>
         </div>
     );
 }

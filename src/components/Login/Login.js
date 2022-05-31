@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import './Login.css';
 
@@ -16,7 +17,7 @@ const Login = () => {
             </div>
             <div className="Box">
                 <p>
-                    계정이 없으신가요? <a href="/join">가입하기</a>
+                    계정이 없으신가요? <Link to={'/join'}>가입하기</Link>
                 </p>
             </div>
         </div>
