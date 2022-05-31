@@ -8,11 +8,12 @@ const AuthRouter = () => {
     useEffect(() => {
         const id = localStorage.getItem('id');
         const findUser = Users.find((data) => data.id === Number(id));
-        if (!findUser) {
-            navigate('/login');
+        if (!findUser || !id) {
+            const from = location.pathname === '/login' || location.pathname === '/join' ? location.pathname : '/login';
+            navigate(from);
         } else {
             const from = location.pathname || '/';
-            navigate(from === '/login' ? '/' : from);
+            navigate(from === '/login' || from === '/join' ? '/' : from);
         }
     }, []);
     return <></>;
