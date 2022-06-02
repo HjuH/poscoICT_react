@@ -8,7 +8,7 @@ const ProfileUpdate = ({ img = '/img/profile/dog.jpg', name = 'park', isOpen, mo
         name,
         img,
     });
-    /* const onChangeFile = (e) => {
+    const onChangeFile = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -17,8 +17,8 @@ const ProfileUpdate = ({ img = '/img/profile/dog.jpg', name = 'park', isOpen, mo
                 setForm({ ...form, img: reader.result });
                 resolve();
             };
-        }); 
-    };*/
+        });
+    };
     const onChangeName = (e) => {
         const { value } = e.target;
         setForm({ ...form, name: value });
@@ -45,6 +45,7 @@ const ProfileUpdateHeader = ({ modalClose, onSubmit }) => {
             <Button outline color="secondary" onClick={modalClose}>
                 취소
             </Button>
+
             <b>프로필 수정</b>
             <Button outline color="primary" onClick={onSubmit}>
                 수정
@@ -56,12 +57,12 @@ const ProfileUpdateHeader = ({ modalClose, onSubmit }) => {
 const ProfileUpdateBody = ({ onChangeFile, onChangeName, form }) => {
     return (
         <div className="ProfileUpdateForm">
-            {/* <Input type="file" hidden accept="image/*" id="imgUpload" onChange={(e) => onChangeFile(e)}></Input>
+            <Input type="file" hidden accept="image/*" id="imgUpload" onChange={(e) => onChangeFile(e)}></Input>
             <label htmlFor="imgUpload">
                 <div className="profileImgBox">
                     <img className="profileImg" src={form.img} alt="myProfileImg"></img>
                 </div>
-            </label> */}
+            </label>
 
             <InputGroup>
                 <InputGroupText>이름</InputGroupText>

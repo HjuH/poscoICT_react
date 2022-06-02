@@ -17,15 +17,17 @@ const Profile = () => {
     const { name, img } = getUser();
     const { posts } = useContext(PostContext);
     const { follows } = useContext(FollowContext);
+    console.log('post : ', posts);
 
     const myPosts = () => {
-        return posts.filter((post) => post.userId === id);
+        console.log(id);
+        return posts.filter((post) => post.userId === Number(id));
     };
     const myFollower = () => {
-        return follows.filter((follow) => follow.following === id);
+        return follows.filter((follow) => follow.following === Number(id));
     };
     const myFollowing = () => {
-        return follows.filter((follow) => follow.follower === id);
+        return follows.filter((follow) => follow.follower === Number(id));
     };
 
     return (

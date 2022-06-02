@@ -17,11 +17,13 @@ import Profile from './Profile/Profile';
 function App() {
     const [users, setUsers] = useState(Users);
     const insertUsers = (user) => {
-        const newUser = { ...user, userId: user.id, id: Users.length };
+        const newUser = { ...user, userId: user.id, id: Users.length.toString };
+        console.log(users);
         setUsers([...users, newUser]);
+        console.log(users);
     };
     const updateUsers = (user) => {
-        const id = Number(localStorage.getItem('id'));
+        const id = localStorage.getItem('id');
         const { img, name } = user;
         const findUsersIndex = users.findIndex((user) => user.id === id);
         if (findUsersIndex === -1) {

@@ -1,13 +1,14 @@
 import { Button } from 'reactstrap';
 import { useState } from 'react';
 import './ProfileBody.css';
+import ProfileUpdate from './ProfileUpdate';
 
 const ProfileBody = ({
     posts = new Array(5),
     follower = new Array(5),
     following = new Array(5),
     img = '/img/profile/dog.jpg',
-    /* name = 'park', */
+    name = 'park',
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const modalClose = () => {
@@ -42,11 +43,14 @@ const ProfileBody = ({
                 </div>
             </div>
             <div className="profileBodyButtonBox">
-                <Button block color="light"></Button>
+                <Button block color="light" onClick={modalOpen}>
+                    프로필 편집
+                </Button>
                 <Button block color="light">
                     보관함 보기
                 </Button>
             </div>
+            <ProfileUpdate img={img} name={name} isOpen={isOpen} modalClose={modalClose}></ProfileUpdate>
         </>
     );
 };

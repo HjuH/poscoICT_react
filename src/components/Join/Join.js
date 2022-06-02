@@ -40,7 +40,7 @@ const Join = () => {
             return;
         } else {
             insertUsers(user);
-            localStorage.setItem('id', users.length);
+            localStorage.setItem('id', users.length.toString);
             navigate('/');
         }
     };
