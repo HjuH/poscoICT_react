@@ -1,11 +1,14 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Button, Col, Container, Form, Input, Row, Alert } from 'reactstrap';
 import './Login.css';
+import { login } from '../store/users';
 import AuthRouter from '../AuthRouter';
-import { UserContext } from '../store/UserContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 const BootstrapLogin = () => {
+    const dispatch = useDispatch();
     const [isFail, setIsFail] = useState(false);
     const [user, setUser] = useState({
         id: '',
@@ -19,16 +22,15 @@ const BootstrapLogin = () => {
 
     const navigate = useNavigate();
 
-    const { users } = useContext(UserContext);
-    const onSubmitLogin = (e) => {
+    const onSubmitLogin = async (e) => {
         e.preventDefault();
-        const findUser = users.find((data) => data.userId === user.id && data.password === user.password);
-        if (findUser) {
-            localStorage.setItem('id', findUser.id);
+        const { isLogin } = await dispatch(login(user)).unwrap();
+
+        if (isLogin) {
             navigate('/');
         } else {
             setIsFail(true);
-            setTimeout(() => closeAlert(), 3000);
+            setTimeout(() => closeAlert, 3000);
         }
     };
 

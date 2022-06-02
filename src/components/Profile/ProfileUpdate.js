@@ -1,6 +1,8 @@
 import { useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, Input, InputGroup, InputGroupText, Modal } from 'reactstrap';
 import { UserContext } from '../store/UserContext';
+import { updateUsers } from '../store/users';
 import './ProfileUpdate.css';
 
 const ProfileUpdate = ({ img = '/img/profile/dog.jpg', name = 'park', isOpen, modalClose }) => {
@@ -8,6 +10,7 @@ const ProfileUpdate = ({ img = '/img/profile/dog.jpg', name = 'park', isOpen, mo
         name,
         img,
     });
+    const dispatch = useDispatch();
     const onChangeFile = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -23,9 +26,9 @@ const ProfileUpdate = ({ img = '/img/profile/dog.jpg', name = 'park', isOpen, mo
         const { value } = e.target;
         setForm({ ...form, name: value });
     };
-    const { updateUsers } = useContext(UserContext);
+    /* const { updateUsers } = useContext(UserContext); */
     const onSubmit = () => {
-        updateUsers(form);
+        dispatch(updateUsers(form));
         modalClose();
     };
 

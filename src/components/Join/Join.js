@@ -5,8 +5,12 @@ import { useNavigate } from 'react-router';
 import AuthRouter from '../AuthRouter';
 import { UserContext } from '../store/UserContext';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getCheckId } from '../store/users';
+import { login } from '../store/users';
 
 const Join = () => {
+    const dispatch = useDispatch();
     const [isFail, setIsFail] = useState(false);
     const [text, setText] = useState('');
     const [user, setUser] = useState({
@@ -21,15 +25,12 @@ const Join = () => {
     };
 
     const navigate = useNavigate();
-    const { insertUsers, users } = useContext(UserContext);
+    /* const { insertUser, users } = useContext(UserContext); */
 
-    const onSubmitJoin = (e) => {
+    const onSubmitJoin = async (e) => {
         e.preventDefault();
-        const findUser = users.find((data) => data.userId === user.id);
-        if (findUser) {
-            openAlert('이미 존재하는 아이디 입니다.');
-            return;
-        } else if (user.id === '') {
+        /* const findUser = users.find((data) => data.userId === user.id); */
+        if (user.id === '') {
             openAlert('아이디를 입력해주세요.');
             return;
         } else if (user.password === '') {
@@ -38,9 +39,14 @@ const Join = () => {
         } else if (user.name === '') {
             openAlert('이름을 입력해주세요.');
             return;
+        }
+        const check = await dispatch(getCheckId(user.id)).unwrap();
+        if (check) {
+            openAlert('이미 존재하는 아이디 입니다.');
+            return;
         } else {
-            insertUsers(user);
-            localStorage.setItem('id', users.length.toString);
+            /* await dispatch(insertUser(user)); */
+            await dispatch(login(user));
             navigate('/');
         }
     };

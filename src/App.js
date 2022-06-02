@@ -19,9 +19,7 @@ function App() {
     const [users, setUsers] = useState(Users);
     const insertUsers = (user) => {
         const newUser = { ...user, userId: user.id, id: Users.length.toString };
-        console.log(users);
         setUsers([...users, newUser]);
-        console.log(users);
     };
     const updateUsers = (user) => {
         const id = localStorage.getItem('id');
