@@ -5,14 +5,15 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from './components/Main';
 import Page404 from './components/Page404';
 import { useState } from 'react';
-import { Users } from './data/User';
-import { Post } from './data/Post';
-import { Follows } from './data/Follow';
-import { UserContext } from './store/UserContext';
-import { PostContext } from './store/PostContext';
-import { FollowContext } from './store/FollowContext';
+import { Users } from './components/data/User';
+import { Post } from './components/data/Post';
+import { Follows } from './components/data/Follow';
+import { UserContext } from './components/store/UserContext';
+import { PostContext } from './components/store/PostContext';
+import { FollowContext } from './components/store/FollowContext';
 import Layout from './components/Layout/Layout';
-import Profile from './Profile/Profile';
+import Profile from './components/Profile/Profile';
+import Search from './components/Search/Search';
 
 function App() {
     const [users, setUsers] = useState(Users);
@@ -43,14 +44,19 @@ function App() {
 
     const [follows, setFollows] = useState(Follows);
     const insertFollow = (followerId) => {
-        const newFollow = { following: localStorage.getItem('id'), follower: followerId };
+        const newFollow = { following: Number(localStorage.getItem('id')), follower: followerId };
         setFollows([...follows, newFollow]);
+    };
+
+    const deletePost = (postId) => {
+        const delPosts = posts.filter((post) => post.id !== postId);
+        setPosts(delPosts);
     };
 
     return (
         <div className="App">
             <UserContext.Provider value={{ users, insertUsers, updateUsers }}>
-                <PostContext.Provider value={{ posts, insertPost }}>
+                <PostContext.Provider value={{ posts, insertPost, deletePost }}>
                     <FollowContext.Provider value={{ follows, insertFollow }}>
                         <BrowserRouter>
                             <Routes>
@@ -58,6 +64,7 @@ function App() {
                                     <Route index element={<Main></Main>}></Route>
                                     <Route path="/shopping" element={<Main></Main>}></Route>
                                     <Route path="/profile" element={<Profile></Profile>}></Route>
+                                    <Route path="/search" element={<Search></Search>}></Route>
                                 </Route>
                                 <Route path="/login" element={<BootstrapLogin></BootstrapLogin>}></Route>
                                 <Route path="/join" element={<Join></Join>}></Route>

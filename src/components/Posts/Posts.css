@@ -1,13 +1,14 @@
-.profileBoard {
+.Posts {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
 
-.profileBoardImgBox {
+.PostsImgBox {
     cursor: pointer;
 }
 
-.profileBoardImg {
+.PostsImg {
     width: 100%;
     height: 100%;
+    aspect-ratio: 1;
 }

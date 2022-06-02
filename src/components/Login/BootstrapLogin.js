@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { Button, Col, Container, Form, Input, Row, Alert } from 'reactstrap';
 import './Login.css';
 import AuthRouter from '../AuthRouter';
-import { UserContext } from '../../store/UserContext';
+import { UserContext } from '../store/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 const BootstrapLogin = () => {

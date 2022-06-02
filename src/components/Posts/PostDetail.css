@@ -1,4 +1,4 @@
-.profileBoardModalHeader {
+.PostsModalHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -8,30 +8,30 @@
     margin-bottom: 4em;
 }
 
-.profileBoardBodyHeader {
+.PostsBodyHeader {
     display: flex;
     align-items: center;
     gap: 1em;
 }
 
-.profileBoardBodyHeaderImgBox {
+.PostsModalHeaderImgBox {
     width: 4em;
     height: 4em;
 }
 
-.profileBoardBodyHeaderImg {
+.PostsModalHeaderImg {
     width: 100%;
     height: 100%;
     border: 2em;
 }
 
-.profileBoardBody {
+.PostsBody {
     display: flex;
     gap: 1em;
     flex-direction: column;
 }
 
-.profileBoardBodyImg {
+.PostsBodyImg {
     width: 100%;
     height: auto;
 }

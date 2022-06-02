@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, Input, Row, Alert } from 'reactstrap';
 import './Join.css';
 import { useNavigate } from 'react-router';
 import AuthRouter from '../AuthRouter';
-import { UserContext } from '../../store/UserContext';
+import { UserContext } from '../store/UserContext';
 import { Link } from 'react-router-dom';
 
 const Join = () => {
