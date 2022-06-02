@@ -12,6 +12,7 @@ import { UserContext } from './store/UserContext';
 import { PostContext } from './store/PostContext';
 import { FollowContext } from './store/FollowContext';
 import Layout from './components/Layout/Layout';
+import Profile from './Profile/Profile';
 
 function App() {
     const [users, setUsers] = useState(Users);
@@ -34,13 +35,13 @@ function App() {
 
     const [posts, setPosts] = useState(Post);
     const insertPost = (post) => {
-        const newPost = { ...post, userId: Number(localStorage.getItem('id')), id: posts.length };
+        const newPost = { ...post, userId: localStorage.getItem('id'), id: posts.length };
         setPosts([...posts, newPost]);
     };
 
     const [follows, setFollows] = useState(Follows);
     const insertFollow = (followerId) => {
-        const newFollow = { following: Number(localStorage.getItem('id')), follower: followerId };
+        const newFollow = { following: localStorage.getItem('id'), follower: followerId };
         setFollows([...follows, newFollow]);
     };
 
@@ -54,6 +55,7 @@ function App() {
                                 <Route path="/" element={<Layout></Layout>}>
                                     <Route index element={<Main></Main>}></Route>
                                     <Route path="/shopping" element={<Main></Main>}></Route>
+                                    <Route path="/profile" element={<Profile></Profile>}></Route>
                                 </Route>
                                 <Route path="/login" element={<BootstrapLogin></BootstrapLogin>}></Route>
                                 <Route path="/join" element={<Join></Join>}></Route>

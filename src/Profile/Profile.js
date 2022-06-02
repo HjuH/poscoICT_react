@@ -3,12 +3,14 @@ import { Container } from 'reactstrap';
 import { UserContext } from '../store/UserContext';
 import ProfileHeader from './ProfileHeader';
 import ProfileBody from './ProfileBody';
+import './Profile.css';
 import { PostContext } from '../store/PostContext';
 import { FollowContext } from '../store/FollowContext';
+import ProfileBoard from './ProfileBoard';
 
 const Profile = () => {
     const { users } = useContext(UserContext);
-    const id = Number(localStorage.getItem('id'));
+    const id = localStorage.getItem('id');
     const getUser = () => {
         return users.find((user) => id === user.id);
     };
@@ -19,7 +21,7 @@ const Profile = () => {
     const myPosts = () => {
         return posts.filter((post) => post.userId === id);
     };
-    const myFollwer = () => {
+    const myFollower = () => {
         return follows.filter((follow) => follow.following === id);
     };
     const myFollowing = () => {
@@ -30,7 +32,8 @@ const Profile = () => {
         <>
             <ProfileHeader name={name}></ProfileHeader>
             <Container className="ProfileContainer">
-                <ProfileBody img={img} follower={myFollwer()} following={myFollowing()} posts={myPosts()}></ProfileBody>
+                <ProfileBody img={img} follower={myFollower()} following={myFollowing()} posts={myPosts()}></ProfileBody>
+                <ProfileBoard posts={myPosts()}></ProfileBoard>
             </Container>
         </>
     );
