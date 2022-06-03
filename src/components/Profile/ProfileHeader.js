@@ -30,14 +30,12 @@ const ProfileHeader = ({ name }) => {
             </div>
 
             <div>
-                <Button outline onClick={openModal}>
-                    <GoDiffAdded size={30}></GoDiffAdded>
-                </Button>
                 <Button outline onClick={onClickLogout}>
                     <BiLogOut size={30}></BiLogOut>
                 </Button>
+
+                <ProfileHeaderAddModal isOpen={isOpen} openModal={openModal} closeModal={closeModal}></ProfileHeaderAddModal>
             </div>
-            <ProfileHeaderAddModal isOpen={isOpen} closeModal={closeModal}></ProfileHeaderAddModal>
         </div>
     );
 };

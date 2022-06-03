@@ -13,7 +13,7 @@ export const Post = [
     },
     {
         id: 2,
-        userId: 0,
+        userId: 1,
         content: 'user 0 안녕하세요3',
         img: '/img/post/post3.jpg',
     },

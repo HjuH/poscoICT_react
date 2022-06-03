@@ -8,9 +8,6 @@ import { useState } from 'react';
 import { Users } from './components/data/User';
 import { Post } from './components/data/Post';
 import { Follows } from './components/data/Follow';
-import { UserContext } from './components/store/UserContext';
-import { PostContext } from './components/store/PostContext';
-import { FollowContext } from './components/store/FollowContext';
 import Layout from './components/Layout/Layout';
 import Profile from './components/Profile/Profile';
 import Search from './components/Search/Search';
@@ -53,25 +50,19 @@ function App() {
 
     return (
         <div className="App">
-            <UserContext.Provider value={{ users, insertUsers, updateUsers }}>
-                <PostContext.Provider value={{ posts, insertPost, deletePost }}>
-                    <FollowContext.Provider value={{ follows, insertFollow }}>
-                        <BrowserRouter>
-                            <Routes>
-                                <Route path="/" element={<Layout></Layout>}>
-                                    <Route index element={<Main></Main>}></Route>
-                                    <Route path="/shopping" element={<Main></Main>}></Route>
-                                    <Route path="/profile" element={<Profile></Profile>}></Route>
-                                    <Route path="/search" element={<Search></Search>}></Route>
-                                </Route>
-                                <Route path="/login" element={<BootstrapLogin></BootstrapLogin>}></Route>
-                                <Route path="/join" element={<Join></Join>}></Route>
-                                <Route path="/*" element={<Page404></Page404>}></Route>
-                            </Routes>
-                        </BrowserRouter>
-                    </FollowContext.Provider>
-                </PostContext.Provider>
-            </UserContext.Provider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Layout></Layout>}>
+                        <Route index element={<Main></Main>}></Route>
+                        <Route path="/shopping" element={<Main></Main>}></Route>
+                        <Route path="/profile" element={<Profile></Profile>}></Route>
+                        <Route path="/search" element={<Search></Search>}></Route>
+                    </Route>
+                    <Route path="/login" element={<BootstrapLogin></BootstrapLogin>}></Route>
+                    <Route path="/join" element={<Join></Join>}></Route>
+                    <Route path="/*" element={<Page404></Page404>}></Route>
+                </Routes>
+            </BrowserRouter>
         </div>
     );
 }

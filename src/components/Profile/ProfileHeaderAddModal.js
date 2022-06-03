@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Container, Input } from 'reactstrap';
 import { insertPosts, selectMyPost } from '../store/posts';
+import { GoDiffAdded } from 'react-icons/go';
 
-const ProfileHeaderAddModal = ({ isOpen, closeModal }) => {
+const ProfileHeaderAddModal = ({ isOpen, openModal, closeModal }) => {
     const dispatch = useDispatch();
     const [form, setForm] = useState({
         content: '',
@@ -34,29 +35,34 @@ const ProfileHeaderAddModal = ({ isOpen, closeModal }) => {
     };
 
     return (
-        <Modal isOpen={isOpen} fullscreen toggle={closeModal}>
-            <div className="PostsModalHeader">
-                <Button close onClick={closeModal}></Button>{' '}
-                <div>
-                    <strong>게시물 생성</strong>
+        <>
+            <Button outline onClick={openModal}>
+                <GoDiffAdded size={30}></GoDiffAdded>
+            </Button>
+            <Modal isOpen={isOpen} fullscreen toggle={closeModal}>
+                <div className="PostsModalHeader">
+                    <Button close onClick={closeModal}></Button>{' '}
+                    <div>
+                        <strong>게시물 생성</strong>
+                    </div>
+                    <Button color="info" outline onClick={onSubmit}>
+                        글쓰기
+                    </Button>
                 </div>
-                <Button color="info" outline onClick={onSubmit}>
-                    글쓰기
-                </Button>
-            </div>
-            <Container>
-                <div className="profileUpdateForm">
-                    <Input type="file" hidden accept="image/*" id="imgUpload" onChange={(e) => onChangeFile(e)}></Input>
-                    <label htmlFor="imgUpload">
-                        <div className="profileImgBox">
-                            <img className="profileImg" src={form.img} alt="myProfileImg"></img>
-                        </div>
-                    </label>
+                <Container>
+                    <div className="profileUpdateForm">
+                        <Input type="file" hidden accept="image/*" id="imgUpload" onChange={(e) => onChangeFile(e)}></Input>
+                        <label htmlFor="imgUpload">
+                            <div className="profileImgBox">
+                                <img className="profileImg" src={form.img} alt="myProfileImg"></img>
+                            </div>
+                        </label>
 
-                    <Input type="textarea" value={form.name} onChange={(e) => onChangeName(e)}></Input>
-                </div>
-            </Container>
-        </Modal>
+                        <Input type="textarea" value={form.name} onChange={(e) => onChangeName(e)}></Input>
+                    </div>
+                </Container>
+            </Modal>
+        </>
     );
 };
 
