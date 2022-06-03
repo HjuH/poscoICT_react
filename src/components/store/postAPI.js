@@ -16,6 +16,15 @@ export const getPostsByUserId = async (posts, userId) => {
     }
 };
 
+export const getPostByKey = async (posts, key, userId) => {
+    try {
+        const findPostByUserId = await posts.filter((post) => Number(userId) === post.userId || key.test(post.content));
+        return findPostByUserId;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const postPost = async (posts, post) => {
     try {
         const newPost = { ...post, id: posts.length };

@@ -9,6 +9,11 @@ export const getUserByUserId = async (users, userId) => {
     return findUserByUserId;
 };
 
+export const getUserByKey = async (users, key) => {
+    const findUserByUserId = await users.find((user) => key.test(user.name));
+    return findUserByUserId;
+};
+
 export const postUser = async (users, user) => {
     const newUser = { ...user, userId: user.id, id: users.length };
     return [...users, newUser];
