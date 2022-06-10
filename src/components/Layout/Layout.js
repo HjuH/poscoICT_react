@@ -1,15 +1,17 @@
-import { Outlet } from 'react-router';
-import AuthRouter from '../AuthRouter';
-import Menubar from './Menubar';
+import { Outlet } from "react-router-dom";
+import AuthRouter from "../AuthRouter";
+import Menubar from "./Menubar";
 
 const Layout = () => {
-    return (
-        <>
-            <AuthRouter></AuthRouter>
-            <Outlet />
-            <Menubar></Menubar>
-        </>
-    );
+  return (
+    <div>
+      <AuthRouter></AuthRouter>
+
+      <Outlet />
+
+      <Menubar></Menubar>
+    </div>
+  );
 };
 
 export default Layout;
