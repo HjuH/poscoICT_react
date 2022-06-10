@@ -3,15 +3,15 @@ import AuthRouter from "../AuthRouter";
 import Menubar from "./Menubar";
 
 const Layout = () => {
-  return (
-    <div>
-      <AuthRouter></AuthRouter>
+    return (
+        <div>
+            <AuthRouter></AuthRouter>
 
-      <Outlet />
+            <Outlet />
 
-      <Menubar></Menubar>
-    </div>
-  );
+            <Menubar></Menubar>
+        </div>
+    );
 };
 
 export default Layout;

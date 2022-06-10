@@ -1,19 +1,21 @@
-import { Users } from "../data/User";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { logoutApi } from "../components/Login/LogoutApi";
+import { Users } from "../data/User";
+import { fileUpload } from "../http/customAxios";
 import {
   checkId,
   getUserById,
-  loginApi,
-  postUser,
-  getUserByUserId,
   getUserByKey,
+  getUserByUserId,
+  loginApi,
+  loginCheckApi,
+  logoutApi,
+  postUser,
   putUsers,
 } from "./usersApi";
 const initialState = {
   users: Users,
-  myId: localStorage.getItem("id"),
-  isLogin: localStorage.getItem("id") === undefined ? true : false,
+  myId: localStorage.getItem("token"),
+  isLogin: localStorage.getItem("token") === undefined ? true : false,
   me: {},
 };
 
@@ -39,16 +41,15 @@ export const loginCheck = createAsyncThunk(
   async (payload, thunkAPI) => {
     const { users, myId } = thunkAPI.getState().users;
     if (myId) {
-      const me = await getUserById(users, Number(myId));
+      const me = await loginCheckApi(users, Number(myId));
       return me;
     } else if (myId === 0 || myId === "0") {
-      const me = await getUserById(users, Number(myId));
+      const me = await loginCheckApi(users, Number(myId));
       return me;
     }
     return;
   }
 );
-
 export const login = createAsyncThunk(LOGIN, async (user, thunkAPI) => {
   const { users } = thunkAPI.getState().users;
   const isLogin = await loginApi(users, user);
@@ -58,20 +59,8 @@ export const insertUser = createAsyncThunk(
   INSERT_USER,
   async (user, thunkAPI) => {
     const { users } = thunkAPI.getState().users;
-    const newUser = await postUser(users, user);
-    return newUser;
-  }
-);
-export const updateUsers = createAsyncThunk(
-  UPDATE_USERS,
-  async (user, thunkAPI) => {
-    const { myId, users } = thunkAPI.getState().users;
-    // let formData = new FormData();
-    // formData.append("file", user.file);
-    // await fileUpload("post", "/upload", formData);
-    // const removeFileUser = { ...user, file: "", img: `/${user.file.name}` };
-    const newUsers = await putUsers(users, user, myId);
-    return { newUsers, user };
+    await postUser(users, user);
+    // return newUser;
   }
 );
 export const selectUserById = createAsyncThunk(
@@ -92,6 +81,23 @@ export const selectUserByUserId = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk(LOGOUT, async (payload, thunkAPI) => {
+  const { myId } = thunkAPI.getState().users;
+  const isLogout = await logoutApi(myId);
+  return isLogout;
+});
+export const updateUsers = createAsyncThunk(
+  UPDATE_USERS,
+  async (user, thunkAPI) => {
+    const { myId, users } = thunkAPI.getState().users;
+    let formData = new FormData();
+    formData.append("file", user.file);
+    await fileUpload("post", "/upload", formData);
+    const removeFileUser = { ...user, file: "", img: `/${user.file.name}` };
+    await putUsers(users, removeFileUser, myId);
+    return { removeFileUser };
+  }
+);
 export const selectUserByKey = createAsyncThunk(
   SELECT_USER_BY_KEY,
   async (key, thunkAPI) => {
@@ -130,25 +136,20 @@ export const usersSlice = createSlice({
           return { ...state, isLogin: false };
         }
       })
+      // .addCase(insertUser.fulfilled, (state, { payload }) => {
+      //     return { ...state, users: payload };
+      // })
       .addCase(logout.fulfilled, (state, { payload }) => {
         localStorage.removeItem("id");
+        localStorage.removeItem("token");
         return { ...state, isLogin: false, me: {}, myId: "" };
       })
       .addCase(updateUsers.fulfilled, (state, { payload }) => {
-        const { newUsers, user } = payload;
-        return { me: { ...state.me, ...user }, users: newUsers };
-        // return { ...state, me: payload.removeFileUser };
-      })
-      .addCase(insertUser.fulfilled, (state, { payload }) => {
-        return { ...state, users: payload };
+        // const { newUsers, user } = payload;
+        // return {  me: { ...state.me, ...user }, users: newUsers };
+        return { ...state, me: payload.removeFileUser };
       });
   },
-});
-
-export const logout = createAsyncThunk(LOGOUT, async (payload, thunkAPI) => {
-  const { myId } = thunkAPI.getState().users;
-  const isLogout = await logoutApi(myId);
-  return isLogout;
 });
 
 export default usersSlice.reducer;
