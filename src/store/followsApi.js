@@ -1,24 +1,26 @@
-import { customAxios } from "../http/customAxios";
+import { customAxios } from "../http/CustomAxios";
 
-export const postFollower = async (userId) => {
+export const postFollower = async (myId, userId) => {
   try {
-    // const newFollower = await { follower: myId, following: userId };
-    const { data } = await customAxios("post", `/follow/${userId}`);
-    return data;
+    const newFollower = await { follower: myId, following: userId };
+    return newFollower;
   } catch (error) {
     throw error;
   }
 };
-export const deleteFollowing = async (userId) => {
+export const deleteFollowing = async (follows, myId, userId) => {
   try {
-    const { data } = await customAxios("delete", `/follow/${userId}`);
+    const delPosts = await follows.filter(
+      (
+        follow //
+      ) => !(follow.follower === myId && follow.following === userId)
+    );
 
-    return data;
+    return delPosts;
   } catch (error) {
     throw error;
   }
 };
-
 export const getFollowerByMe = async (follows, myId) => {
   try {
     const findFollowerByMe = await follows.filter(
@@ -41,10 +43,16 @@ export const getFollowingByMe = async (follows, myId) => {
   }
 };
 
-export const getFollowingByMeOne = async (userId) => {
+export const getFollowingByMeOne = async (follows, myId, userId) => {
   try {
-    const { data } = await customAxios("get", `/follow/follower/${userId}`);
-    return data.length === 0 ? false : true;
+    const findFollowingByMe = await follows.find(
+      (
+        follow //
+      ) => {
+        return follow.following === userId && follow.follower === myId;
+      }
+    );
+    return findFollowingByMe;
   } catch (error) {
     throw error;
   }

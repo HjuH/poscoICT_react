@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Users } from "../data/User";
-import { fileUpload } from "../http/customAxios";
 import {
   checkId,
   getUserById,
@@ -59,8 +58,8 @@ export const insertUser = createAsyncThunk(
   INSERT_USER,
   async (user, thunkAPI) => {
     const { users } = thunkAPI.getState().users;
-    await postUser(users, user);
-    // return newUser;
+    const newUser = await postUser(users, user);
+    return newUser;
   }
 );
 export const selectUserById = createAsyncThunk(
@@ -90,12 +89,8 @@ export const updateUsers = createAsyncThunk(
   UPDATE_USERS,
   async (user, thunkAPI) => {
     const { myId, users } = thunkAPI.getState().users;
-    let formData = new FormData();
-    formData.append("file", user.file);
-    await fileUpload("post", "/upload", formData);
-    const removeFileUser = { ...user, file: "", img: `/${user.file.name}` };
-    await putUsers(users, removeFileUser, myId);
-    return { removeFileUser };
+    const newUsers = await putUsers(users, user, myId);
+    return { newUsers, user };
   }
 );
 export const selectUserByKey = createAsyncThunk(
@@ -124,30 +119,23 @@ export const usersSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, { payload }) => {
         if (payload.isLogin) {
-          localStorage.setItem("id", payload.user.id);
-          localStorage.setItem("token", payload.token);
-          return {
-            ...state,
-            isLogin: payload.login, //
-            me: payload.user,
-            myId: payload.user.id,
-          };
+          localStorage.setItem("token", payload.user.token);
+          return { ...state, isLogin: payload.login, me: payload.user };
         } else {
           return { ...state, isLogin: false };
         }
       })
-      // .addCase(insertUser.fulfilled, (state, { payload }) => {
-      //     return { ...state, users: payload };
-      // })
+      .addCase(insertUser.fulfilled, (state, { payload }) => {
+        return { ...state, users: payload };
+      })
       .addCase(logout.fulfilled, (state, { payload }) => {
-        localStorage.removeItem("id");
         localStorage.removeItem("token");
         return { ...state, isLogin: false, me: {}, myId: "" };
       })
       .addCase(updateUsers.fulfilled, (state, { payload }) => {
-        // const { newUsers, user } = payload;
-        // return {  me: { ...state.me, ...user }, users: newUsers };
-        return { ...state, me: payload.removeFileUser };
+        const { newUsers, user } = payload;
+
+        return { ...state, me: { ...state.me, ...user }, users: newUsers };
       });
   },
 });
